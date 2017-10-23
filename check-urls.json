@@ -1,50 +1,13 @@
 [{
-    "name":"マイナビ検証用",
-    "topicArn":"arn:aws:sns:us-west-2:487633758420:To_Haniyama",
+    "name":"mysite",
+    "topicArn":"arn:aws:sns:us-west-2:1234567890:SNS_NAME",
     "isActive": false,
     "options": {
-        "url": "https://previewsite.yubion.com",
+        "url": "https://your_site.com",
         "method": "GET",
         "auth": {
-            "user": "mynavi",
-            "password": "sgk201709"
+            "user": "username",
+            "password": "if basic auth"
           }
     }
-},
-{
-    "name":"YubiOnサイト",
-    "topicArn":"arn:aws:sns:us-west-2:487633758420:Check_Web_Alive",
-    "isActive": true,
-    "options": {
-        "url": "https://www.yubion.com",
-        "method": "GET"
-    }
-},
-{
-    "name":"YubiKeyサイト",
-    "topicArn":"arn:aws:sns:us-west-2:487633758420:Check_Web_Alive",
-    "isActive": true,
-    "options": {
-        "url": "https://yubikey.yubion.com",
-        "method": "GET"
-    }
-},
-{
-    "name":"コーポレートサイト",
-    "topicArn":"arn:aws:sns:us-west-2:487633758420:Check_Web_Alive",
-    "isActive": true,
-    "options": {
-        "url": "https://sgk.co.jp",
-        "method": "GET"
-    }
-},
-{
-    "name":"YubiOn SSO",
-    "topicArn":"arn:aws:sns:us-west-2:487633758420:Check_Web_Alive",
-    "isActive": true,
-    "options": {
-        "url": "https://sso.yubion.com",
-        "method": "GET"
-    }
-}
-]
+}]
