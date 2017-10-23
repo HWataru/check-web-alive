@@ -30,8 +30,8 @@ exports.handler = (event, context, callback) => {
                         return;
                     }
                     let result = false;
-                    if (res.statusCode === 200 && options.isActive ||
-                        res.statusCode !== 200 && !options.isActive) {
+                    if (res.statusCode === 200 && data.isActive ||
+                        res.statusCode !== 200 && !data.isActive) {
                         return;
                     } else if (res.statusCode === 200) {
                         result = true;
@@ -54,7 +54,7 @@ exports.handler = (event, context, callback) => {
                         });
                     }
                     isUpdate = true;
-                    urlList[index].options.isActive = result;
+                    urlList[index].isActive = result;
                     resolve(result);
                 }).on('error', (err) => {
                     console.log(err)
