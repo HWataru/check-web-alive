@@ -29,12 +29,11 @@ exports.handler = (event, context, callback) => {
                         console.log(err)
                         resolve(err);
                     }
-                    let result = false;
                     if (res.statusCode === 200 && data.isActive ||
                         res.statusCode !== 200 && !data.isActive) {
+                        console.log(options.url + " is nothig update");
                         resolve(options.url + " is nothing update");
                     } else if (res.statusCode === 200) {
-                        result = true;
                         console.log(options.url + " is ok");
                         sns.publish({
                             Message: options.url + ' が復活しました。',
@@ -43,6 +42,9 @@ exports.handler = (event, context, callback) => {
                         }, (err) => {
                             console.log(err);
                         });
+                        isUpdate = true;
+                        urlList[index].isActive = true;
+                        resolve(options.url + " is ok");    
                     } else {
                         console.log(options.url + " is error");
                         sns.publish({
@@ -52,10 +54,10 @@ exports.handler = (event, context, callback) => {
                         }, (err) => {
                             console.log(err);
                         });
+                        isUpdate = true;
+                        urlList[index].isActive = false;
+                        resolve(options.url + "is error");    
                     }
-                    isUpdate = true;
-                    urlList[index].isActive = result;
-                    resolve(options.url + (result ? " is ok":"is error"));
                 }).on('error', (err) => {
                     console.log(err)
                     resolve(err);
@@ -64,7 +66,7 @@ exports.handler = (event, context, callback) => {
             reqs.push(req);
         });
         Promise.all(reqs).then((messages) => {
-            if (urlList == null && !isUpdate) {
+            if (urlList == null || !isUpdate) {
                 console.log("nothing update");
                 return;
             }
