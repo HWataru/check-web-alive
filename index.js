@@ -27,20 +27,20 @@ exports.handler = (event, context, callback) => {
                 request(options, (err, res, body) => {
                     if (err) {
                         console.log(err)
-                        return;
+                        resolve(err);
                     }
                     let result = false;
                     if (res.statusCode === 200 && data.isActive ||
                         res.statusCode !== 200 && !data.isActive) {
-                        return;
+                        resolve(options.url + " is nothing update");
                     } else if (res.statusCode === 200) {
                         result = true;
                         console.log(options.url + " is ok");
                         sns.publish({
                             Message: options.url + ' が復活しました。',
-                            Subject: 'error notification',
+                            Subject: 'come back notification',
                             TopicArn: data.topicArn
-                        }, (err, data) => {
+                        }, (err) => {
                             console.log(err);
                         });
                     } else {
@@ -49,23 +49,23 @@ exports.handler = (event, context, callback) => {
                             Message: options.url + ' からの応答がありません。',
                             Subject: 'error notification',
                             TopicArn: data.topicArn
-                        }, (err, data) => {
+                        }, (err) => {
                             console.log(err);
                         });
                     }
                     isUpdate = true;
                     urlList[index].isActive = result;
-                    resolve(result);
+                    resolve(options.url + (result ? " is ok":"is error"));
                 }).on('error', (err) => {
                     console.log(err)
                     resolve(err);
-                    return;
                 })
             })
             reqs.push(req);
         });
-        Promise.all(reqs).then(() => {
+        Promise.all(reqs).then((messages) => {
             if (urlList == null && !isUpdate) {
+                console.log("nothing update");
                 return;
             }
             console.log("upload result...");
